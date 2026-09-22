@@ -1,69 +1,169 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { CharacterOrb } from "@/components/character/CharacterOrb";
+import { CharacterCard } from "@/components/character/CharacterCard";
+import { PronunciationButton } from "@/components/pronunciation/PronunciationButton";
+import { useProgressContext } from "@/components/providers/ProgressProvider";
+import { Button } from "@/components/ui/Button";
+import { ProgressBar } from "@/components/ui/ProgressBar";
+import { Logo } from "@/components/ui/Logo";
+import { characters } from "@/data/characters";
+import { useLanguage } from "@/hooks/useLanguage";
+import Link from "next/link";
+
+export default function HomePage() {
+  const { t } = useLanguage();
+  const { progress, getStatus } = useProgressContext();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      {/* Mobile header */}
+      <div className="mb-6 flex items-center justify-between md:hidden">
+        <Logo compact />
+        <div
+          className="h-9 w-9 rounded-full bg-amber-200/80"
+          role="img"
+          aria-label={t("រូបភាពប្រវត្តិ", "Profile")}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+      </div>
+
+      {/* Mobile home */}
+      <div className="md:hidden">
+        <h1 className="font-khmer-serif mb-6 text-2xl font-bold">
+          {t("សួស្តី! តោះរៀនសរសេរ", "Hello! Let's learn to write")}
+        </h1>
+
+        <div className="glass-card mb-6 rounded-2xl p-5">
+          <div className="mb-2 flex items-center gap-2 text-gold">
+            <span aria-hidden="true">🔥</span>
+            <span className="text-sm font-medium">
+              {t(
+                `${progress.streakDays} ថ្ងៃជាប់គ្នា`,
+                `${progress.streakDays}-day streak`,
+              )}
+            </span>
+          </div>
+          <p className="mb-3 text-sm text-primary">
+            {t(
+              `បានរៀន ${progress.learnedCount} នៃ ${progress.totalCharacters} អក្សរ`,
+              `Learned ${progress.learnedCount} of ${progress.totalCharacters} characters`,
+            )}
           </p>
+          <ProgressBar
+            value={progress.learnedCount}
+            max={progress.totalCharacters}
+          />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+
+        <div className="glass-card mb-6 rounded-2xl p-6 text-center">
+          <p className="mb-4 text-sm text-primary">
+            {t("បន្តមេរៀន", "Continue lesson")}
+          </p>
+          <CharacterOrb variant="mobile" centerId="ka" />
+          <Link href="/learn" className="mt-6 block">
+            <Button variant="primary" glow size="lg" className="w-full">
+              {t("បន្តរៀន", "Continue learning")}
+            </Button>
+          </Link>
+        </div>
+
+        <div className="mb-4 grid grid-cols-4 gap-3">
+          {characters.slice(0, 4).map((char) => (
+            <CharacterCard
+              key={char.id}
+              id={char.id}
+              character={char.character}
+              status={getStatus(char.id)}
+              href={`/characters/${char.id}`}
+              size="sm"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          ))}
         </div>
-      </main>
-    </div>
+
+        <p className="text-center text-xs text-primary/70">
+          {t("រៀន • សរសេរ • អនុវត្ត • ចងចាំ", "Learn • Write • Practice • Remember")}
+        </p>
+      </div>
+
+      {/* Desktop home */}
+      <div className="hidden md:grid md:grid-cols-2 md:items-center md:gap-12 lg:gap-16">
+        <div>
+          <p className="mb-4 text-sm text-gold">
+            {t("រៀន • សរសេរ • អនុវត្ត • ចងចាំ", "Learn • Write • Practice • Remember")}
+          </p>
+          <h1 className="font-khmer-serif mb-4 text-4xl leading-tight font-bold lg:text-5xl">
+            {t(
+              "រៀនសរសេរអក្សរខ្មែរដោយជំហានងាយៗ",
+              "Learn Khmer handwriting step by step",
+            )}
+          </h1>
+          <p className="mb-8 max-w-lg text-muted">
+            {t(
+              "មើលលំដាប់ខ្សែ អនុវត្តដោយដៃ និងទទួលបានការកែម្អតម្រាមៗ។",
+              "Watch stroke order, practice by hand, and get instant feedback.",
+            )}
+          </p>
+
+          <div className="mb-8 flex flex-wrap gap-4">
+            <Link href="/learn">
+              <Button variant="primary" glow size="lg">
+                {t("ចាប់ផ្តើមរៀន", "Start Learning")}
+              </Button>
+            </Link>
+            <Link href="/practice/ka">
+              <Button variant="ghost" size="lg">
+                {t("សាកល្បងសរសេរ", "Try Writing")}
+              </Button>
+            </Link>
+          </div>
+
+          <PronunciationButton characterId="ka" variant="card" className="mb-8" />
+
+          <div className="flex flex-wrap gap-8">
+            <div>
+              <div className="text-2xl font-bold text-primary">
+                {progress.learnedCount}/{progress.totalCharacters}
+              </div>
+              <div className="text-sm text-muted">
+                {t("អក្សរដែលបានរៀន", "Characters learned")}
+              </div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-gold">
+                {Math.round(
+                  (progress.learnedCount / progress.totalCharacters) * 100,
+                )}
+                %
+              </div>
+              <div className="text-sm text-muted">
+                {t("ភាគរយពេញលេញ", "Completion")}
+              </div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-white">
+                {progress.streakDays}
+              </div>
+              <div className="text-sm text-muted">
+                {t("ថ្ងៃជាប់គ្នា", "Day streak")}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <CharacterOrb variant="desktop" centerId="ka" />
+          <div className="mt-6 flex justify-end gap-6 text-xs text-muted">
+            <span className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-primary" />
+              {t("បានរៀន", "Learned")}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full border border-muted" />
+              {t("មិនទាន់រៀន", "Upcoming")}
+            </span>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

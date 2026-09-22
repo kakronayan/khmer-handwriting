@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# សរសេរខ្មែរ — Khmer Handwriting
 
-## Getting Started
+Production-ready responsive web app for learning Khmer handwriting, built from the Figma designs in the parent `khmer-carved` folder.
 
-First, run the development server:
+## Tech stack
+
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS v4
+- Lucide icons
+- HTML Canvas (Pointer Events)
+- SVG stroke animation
+- LocalStorage progress persistence
+
+## Getting started
 
 ```bash
+cd khmer-handwriting
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Routes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | Description |
+|-------|-------------|
+| `/` | Landing page |
+| `/learn` | Character learning by category |
+| `/characters` | Character library with search |
+| `/characters/[id]` | Character detail |
+| `/characters/[id]/strokes` | Stroke animation |
+| `/practice/[id]` | Guided drawing practice |
+| `/practice/[id]/result` | Practice result |
+| `/recognition` | Free drawing & mock recognition |
+| `/progress` | Progress dashboard |
 
-## Learn More
+## Characters
 
-To learn more about Next.js, take a look at the following resources:
+Initial set: **ក, ខ, គ, ឃ, ង** with Khmer names, IPA, stroke SVG paths, example words, and learning status.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` — development server
+- `npm run build` — production build
+- `npm run lint` — ESLint
+- `npm start` — run production server
