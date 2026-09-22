@@ -22,6 +22,7 @@
 
 # misc
 .DS_Store
+.pages-serve/
 *.pem
 
 # debug
