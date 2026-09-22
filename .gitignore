@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 .pages-serve/
+.deploy/
 *.pem
 
 # debug
