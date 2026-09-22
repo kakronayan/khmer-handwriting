@@ -1,0 +1,5 @@
+:HL["/khmer-handwriting/_next/static/chunks/3-q76wv4wdpb9.css","style"]
+:HL["/khmer-handwriting/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/khmer-handwriting/_next/static/media/bacc7a251336505f-s.p.1npy6e317obpu.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/khmer-handwriting/_next/static/media/c9e3dcfa028c4e65-s.p.3jr1_4e46qdug.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"characters","param":null,"prefetchHints":4192,"slots":{"children":{"name":"id","param":{"type":"d","key":"vowel-pu","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"AvAK1zXgEMnznaCkOvSg5"}
