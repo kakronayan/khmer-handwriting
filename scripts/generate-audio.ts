@@ -4,7 +4,8 @@ import { EdgeTTS } from "node-edge-tts";
 import { characters } from "../data/characters";
 import { getAudioPath, getSpeechText } from "../lib/speech-text";
 
-const VOICE = "km-KH-PisethNeural";
+// Clear Khmer female voice (Microsoft Edge TTS: Sreymom)
+const VOICE = "km-KH-SreymomNeural";
 const OUTPUT_DIR = path.join(process.cwd(), "public", "audio");
 
 async function main() {
