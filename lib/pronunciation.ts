@@ -1,44 +1,90 @@
 import { getCharacterById } from "@/data/characters";
 import { assetPath } from "@/lib/asset-path";
+import { getAudioPath, getSpeechText } from "@/lib/speech-text";
 
 let currentUtterance: SpeechSynthesisUtterance | null = null;
+let currentAudio: HTMLAudioElement | null = null;
+
+function playAudioFile(path: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const audio = new Audio(assetPath(path));
+    currentAudio = audio;
+
+    audio.onended = () => {
+      if (currentAudio === audio) currentAudio = null;
+      resolve();
+    };
+    audio.onerror = () => {
+      if (currentAudio === audio) currentAudio = null;
+      reject(new Error("Audio playback failed"));
+    };
+
+    void audio.play().catch(reject);
+  });
+}
+
+function speakWithBrowser(text: string): Promise<void> {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      resolve();
+      return;
+    }
+
+    const voices = window.speechSynthesis.getVoices();
+    const khmerVoice = voices.find(
+      (voice) => voice.lang.startsWith("km") || voice.lang.includes("Khmer"),
+    );
+
+    window.speechSynthesis.cancel();
+    currentUtterance = new SpeechSynthesisUtterance(text);
+    currentUtterance.lang = "km-KH";
+    currentUtterance.rate = 0.85;
+
+    if (khmerVoice) {
+      currentUtterance.voice = khmerVoice;
+    }
+
+    currentUtterance.onend = () => {
+      currentUtterance = null;
+      resolve();
+    };
+    currentUtterance.onerror = () => {
+      currentUtterance = null;
+      resolve();
+    };
+
+    window.speechSynthesis.speak(currentUtterance);
+  });
+}
 
 export async function speakCharacter(characterId: string): Promise<void> {
   const character = getCharacterById(characterId);
-  if (!character) return;
+  if (!character || typeof window === "undefined") return;
 
-  if (typeof window === "undefined") return;
+  stopSpeaking();
 
-  if ("speechSynthesis" in window) {
-    const voices = window.speechSynthesis.getVoices();
-    const khmerVoice = voices.find(
-      (v) => v.lang.startsWith("km") || v.lang.includes("Khmer"),
-    );
+  const audioPath = character.audioFile ?? getAudioPath(character.id);
 
-    if (khmerVoice) {
-      window.speechSynthesis.cancel();
-      currentUtterance = new SpeechSynthesisUtterance(character.character);
-      currentUtterance.lang = "km-KH";
-      currentUtterance.voice = khmerVoice;
-      currentUtterance.rate = 0.85;
-      window.speechSynthesis.speak(currentUtterance);
-      return;
-    }
+  try {
+    await playAudioFile(audioPath);
+    return;
+  } catch {
+    // Fall back to browser speech when the MP3 is missing or blocked.
   }
 
-  if (character.audioFile) {
-    try {
-      const audio = new Audio(assetPath(character.audioFile));
-      await audio.play();
-    } catch {
-      // Audio file not available yet — fallback architecture in place
-    }
-  }
+  await speakWithBrowser(getSpeechText(character));
 }
 
 export function stopSpeaking(): void {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
+  }
+
   if (typeof window !== "undefined" && "speechSynthesis" in window) {
     window.speechSynthesis.cancel();
   }
+
   currentUtterance = null;
 }

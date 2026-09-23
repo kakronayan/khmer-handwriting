@@ -3,6 +3,9 @@ import { sortKhmerConsonants } from "@/lib/khmer-order";
 import { consonants as rawConsonants } from "./consonants";
 import { vowels } from "./vowels";
 import { marks, blessingMarks } from "./marks";
+import { subscripts } from "./subscripts";
+
+export { subscripts };
 
 export const consonants = sortKhmerConsonants(rawConsonants);
 
@@ -11,6 +14,7 @@ export const characters: KhmerCharacter[] = [
   ...vowels,
   ...marks,
   ...blessingMarks,
+  ...subscripts,
 ];
 
 export const TOTAL_CHARACTERS = characters.length;
@@ -21,6 +25,7 @@ export const DEPENDENT_VOWEL_COUNT = vowels.filter(
   (v) => v.vowelType === "dependent",
 ).length;
 export const MARK_COUNT = marks.length + blessingMarks.length;
+export const SUBSCRIPT_COUNT = subscripts.length;
 
 export function getCharacterById(id: string): KhmerCharacter | undefined {
   return characters.find((c) => c.id === id);
@@ -42,6 +47,9 @@ export function getRelatedCharacters(id: string): KhmerCharacter[] {
   }
   if (current.category === "mark") {
     return characters.filter((c) => c.category === "mark");
+  }
+  if (current.category === "subscript") {
+    return characters.filter((c) => c.category === "subscript");
   }
   return characters.filter(
     (c) => c.category === current.category && c.group === current.group,

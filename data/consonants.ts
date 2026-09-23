@@ -1,3 +1,4 @@
+import { getAudioPath } from "@/lib/speech-text";
 import type { KhmerCharacter } from "@/types";
 import { makeCharacter } from "./character-factory";
 
@@ -46,7 +47,7 @@ export const consonants: KhmerCharacter[] = [
         directionKm: "បញ្ចប់ខាងក្រោម",
       },
     ],
-    audioFile: "/audio/ka.mp3",
+    audioFile: getAudioPath("ka"),
   },
   {
     id: "kha",
@@ -91,7 +92,7 @@ export const consonants: KhmerCharacter[] = [
         directionKm: "គូសខ្ពស់ខាងលើ",
       },
     ],
-    audioFile: "/audio/kha.mp3",
+    audioFile: getAudioPath("kha"),
   },
   makeCharacter({
     id: "cha",
@@ -235,7 +236,7 @@ export const consonants: KhmerCharacter[] = [
         directionKm: "បន្ទាត់ចុះក្រោម",
       },
     ],
-    audioFile: "/audio/ngo.mp3",
+    audioFile: getAudioPath("ngo"),
   },
   makeCharacter({
     id: "nyo",
@@ -391,7 +392,7 @@ export const consonants: KhmerCharacter[] = [
         directionKm: "បត់ទៅស្ដាំ",
       },
     ],
-    audioFile: "/audio/ko.mp3",
+    audioFile: getAudioPath("ko"),
   },
   {
     id: "kho",
@@ -436,7 +437,7 @@ export const consonants: KhmerCharacter[] = [
         directionKm: "គូសខ្ពស់ខាងលើ",
       },
     ],
-    audioFile: "/audio/kho.mp3",
+    audioFile: getAudioPath("kho"),
   },
   makeCharacter({
     id: "co",

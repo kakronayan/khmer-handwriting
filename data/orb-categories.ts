@@ -1,4 +1,4 @@
-import { characters, consonants } from "@/data/characters";
+import { characters, consonants, subscripts } from "@/data/characters";
 import type { KhmerCharacter } from "@/types";
 
 export interface OrbCategory {
@@ -63,6 +63,8 @@ export function getOrbCategoryCharacters(categoryId: string): KhmerCharacter[] {
       );
     case "mark":
       return characters.filter((c) => c.category === "mark");
+    case "subscript":
+      return subscripts;
     default:
       return [];
   }

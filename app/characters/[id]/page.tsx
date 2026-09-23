@@ -172,6 +172,9 @@ function getCategoryLabel(
   if (character.category === "mark") {
     return t("ស្រ:បម្រុង", "Subscript marks");
   }
+  if (character.category === "subscript") {
+    return t("មានប៉ន្មានតួ", "Subscript forms");
+  }
   return t("អក្សរខ្មែរ", "Khmer characters");
 }
 
@@ -190,6 +193,9 @@ function getClassLabel(
   }
   if (character.category === "mark") {
     return t("ស្រ:បម្រុង", "Subscript mark");
+  }
+  if (character.category === "subscript") {
+    return t("មានប៉ន្មានតួ", "Subscript form");
   }
   return t("អក្សរ", "Character");
 }

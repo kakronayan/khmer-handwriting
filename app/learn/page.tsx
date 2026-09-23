@@ -122,6 +122,11 @@ function LearnPageContent() {
             category="mark"
             columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
           />
+        ) : activeCategory === "subscript" ? (
+          <CharacterGrid
+            category="subscript"
+            columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+          />
         ) : (
           <div className="glass-card rounded-2xl p-12 text-center text-muted">
             {t(

@@ -1,3 +1,4 @@
+import { getAudioPath } from "@/lib/speech-text";
 import type { KhmerCharacter, CharacterCategory, VowelType } from "@/types";
 
 const PLACEHOLDER_GUIDE =
@@ -26,6 +27,7 @@ export function makeCharacter(input: CharacterInput): KhmerCharacter {
   const strokeCount = input.strokeCount ?? 1;
   return {
     ...input,
+    audioFile: getAudioPath(input.id),
     strokeCount,
     guidePath: input.guidePath ?? PLACEHOLDER_GUIDE,
     strokes: input.strokes ?? [

@@ -27,8 +27,11 @@ export function PronunciationButton({
       return;
     }
     setSpeaking(true);
-    await speakCharacter(characterId);
-    setTimeout(() => setSpeaking(false), 1500);
+    try {
+      await speakCharacter(characterId);
+    } finally {
+      setSpeaking(false);
+    }
   };
 
   if (variant === "card") {
