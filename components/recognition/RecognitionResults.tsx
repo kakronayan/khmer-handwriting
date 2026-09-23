@@ -74,7 +74,7 @@ export function RecognitionResults({
       </Card>
 
       <div>
-        <p className="mb-2 font-inter text-xs tracking-wider text-muted uppercase">
+        <p className="mb-2 text-xs tracking-wider text-muted uppercase">
           {t("ជម្រើសផ្សេង", "Alternatives")}
         </p>
         <div className="grid grid-cols-3 gap-3">

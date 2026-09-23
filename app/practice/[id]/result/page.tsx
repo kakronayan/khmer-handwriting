@@ -46,7 +46,7 @@ export default function PracticeResultPage({
 
   return (
     <div>
-      <p className="mb-2 font-inter text-xs tracking-wider text-gold uppercase hidden md:block">
+      <p className="mb-2 text-xs tracking-wider text-gold uppercase hidden md:block">
         Check → Improve
       </p>
       <h1 className="font-khmer-serif mb-2 text-2xl font-bold md:text-3xl">

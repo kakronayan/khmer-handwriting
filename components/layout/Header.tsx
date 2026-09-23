@@ -32,16 +32,16 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 hidden border-b border-foreground/5 bg-surface/80 backdrop-blur-md md:block">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <Logo />
 
-        <nav className="flex items-center gap-1" aria-label="Main navigation">
+        <nav className="font-khmer-serif flex items-center gap-2" aria-label="Main navigation">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "focus-ring rounded-lg px-4 py-2 text-sm transition-colors",
+                "font-khmer-serif focus-ring rounded-lg px-5 py-3 text-[1.15rem] leading-tight transition-colors",
                 isActive(item.href)
                   ? "font-medium text-primary"
                   : "text-muted hover:text-foreground",
@@ -52,13 +52,13 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="font-battambang flex items-center gap-3">
           <ThemeToggle />
 
           <div className="relative">
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="focus-ring flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-muted hover:text-foreground"
+              className="font-battambang focus-ring flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-muted hover:text-foreground"
               aria-label={t("ជ្រើសរើសភាសា", "Select language")}
               aria-expanded={langOpen}
             >
@@ -68,7 +68,7 @@ export function Header() {
             {langOpen && (
               <div className="glass-card absolute top-full right-0 mt-1 min-w-[100px] rounded-xl py-1">
                 <button
-                  className="focus-ring w-full px-4 py-2 text-left text-sm hover:bg-foreground/5"
+                  className="font-battambang focus-ring w-full px-4 py-2 text-left text-sm hover:bg-foreground/5"
                   onClick={() => {
                     setLang("km");
                     setLangOpen(false);
@@ -77,7 +77,7 @@ export function Header() {
                   ខ្មែរ
                 </button>
                 <button
-                  className="focus-ring w-full px-4 py-2 text-left text-sm hover:bg-foreground/5"
+                  className="font-battambang focus-ring w-full px-4 py-2 text-left text-sm hover:bg-foreground/5"
                   onClick={() => {
                     setLang("en");
                     setLangOpen(false);
@@ -90,7 +90,7 @@ export function Header() {
           </div>
 
           <button
-            className="focus-ring flex h-9 w-9 items-center justify-center rounded-full border border-foreground/10 text-muted hover:text-foreground"
+            className="font-battambang focus-ring flex h-9 w-9 items-center justify-center rounded-full border border-foreground/10 text-muted hover:text-foreground"
             aria-label={t("ជំនួយ", "Help")}
           >
             <HelpCircle className="h-5 w-5" />

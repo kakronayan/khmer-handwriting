@@ -17,7 +17,7 @@ export default function HomePage() {
   const { progress, getStatus } = useProgressContext();
 
   return (
-    <>
+    <div className="md:flex md:h-full md:min-h-0 md:flex-col">
       {/* Mobile header */}
       <div className="mb-6 flex items-center justify-between md:hidden">
         <Logo compact />
@@ -83,7 +83,7 @@ export default function HomePage() {
       </div>
 
       {/* Desktop home */}
-      <div className="hidden md:grid md:h-full md:min-h-0 md:grid-cols-2 md:items-center md:gap-8 lg:gap-12">
+      <div className="hidden md:grid md:min-h-0 md:flex-1 md:grid-cols-2 md:items-center md:gap-8 lg:gap-12">
         <div className="min-w-0">
           <p className="mb-3 text-sm text-gold">
             {t("រៀន • សរសេរ • អនុវត្ត • ចងចាំ", "Learn • Write • Practice • Remember")}
@@ -147,9 +147,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="flex h-full w-full min-w-0 flex-col items-center justify-center">
+        <div className="flex h-full w-full min-w-0 flex-col items-center justify-center overflow-hidden">
           <CharacterOrb variant="desktop" centerId="ka" />
-          <div className="mt-6 flex justify-center gap-6 text-xs text-muted">
+          <div className="mt-4 flex shrink-0 justify-center gap-6 text-xs text-muted">
             <span className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full bg-primary" />
               {t("បានរៀន", "Learned")}
@@ -161,6 +161,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

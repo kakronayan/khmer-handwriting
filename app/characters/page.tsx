@@ -46,7 +46,7 @@ export default function CharactersPage() {
 
   return (
     <div>
-      <p className="mb-2 font-inter text-xs tracking-wider text-gold uppercase">
+      <p className="mb-2 text-xs tracking-wider text-gold uppercase">
         Character Library
       </p>
       <h1 className="font-khmer-serif mb-2 text-3xl font-bold md:text-4xl">

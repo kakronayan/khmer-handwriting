@@ -1,4 +1,16 @@
 @import "tailwindcss";
+@import "@fontsource/battambang/100.css";
+@import "@fontsource/battambang/300.css";
+@import "@fontsource/battambang/400.css";
+@import "@fontsource/battambang/700.css";
+@import "@fontsource/battambang/900.css";
+@import "@fontsource/noto-serif-khmer/400.css";
+@import "@fontsource/noto-serif-khmer/600.css";
+@import "@fontsource/noto-serif-khmer/700.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
 
 :root {
   --background: #f4f7fb;
@@ -13,9 +25,11 @@
   --danger: #dc2626;
   --success: #059669;
   --surface: #ffffff;
+  --font-battambang: "Battambang", sans-serif;
+  --font-noto-serif-khmer: "Noto Serif Khmer", serif;
+  --font-inter: "Inter", sans-serif;
   --font-khmer-sans: var(--font-battambang);
   --font-khmer-serif: var(--font-noto-serif-khmer);
-  --font-inter: var(--font-inter);
 }
 
 .dark {
@@ -77,6 +91,20 @@ body {
   overflow-x: hidden;
 }
 
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+html.home-no-scroll,
+body.home-no-scroll {
+  height: 100dvh;
+  overflow: hidden;
+}
+
 p,
 nav,
 menu {
@@ -87,8 +115,24 @@ menu {
   font-family: var(--font-khmer-serif), var(--font-khmer-sans), serif;
 }
 
+.font-battambang {
+  font-family: var(--font-battambang), var(--font-inter), system-ui, sans-serif;
+}
+
 .font-inter {
   font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+nav[aria-label="Main navigation"] a,
+nav[aria-label="Main navigation"] button,
+nav[aria-label="Main navigation"] p {
+  font-family: var(--font-khmer-serif), var(--font-khmer-sans), serif;
+}
+
+nav[aria-label="Mobile navigation"] a,
+nav[aria-label="Mobile navigation"] button,
+nav[aria-label="Mobile navigation"] p {
+  font-family: var(--font-battambang), var(--font-inter), system-ui, sans-serif;
 }
 
 .glass-card {

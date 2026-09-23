@@ -46,7 +46,7 @@ export default function PracticePage({
 
   return (
     <div>
-      <p className="mb-2 font-inter text-xs tracking-wider text-gold uppercase md:block hidden">
+      <p className="mb-2 text-xs tracking-wider text-gold uppercase md:block hidden">
         Draw
       </p>
       <h1 className="font-khmer-serif mb-1 text-2xl font-bold md:mb-2 md:text-3xl">

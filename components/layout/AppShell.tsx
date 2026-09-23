@@ -10,7 +10,7 @@ import { LanguageContext, useLanguageState } from "@/hooks/useLanguage";
 import { ThemeContext, useThemeState } from "@/hooks/useTheme";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 interface AppShellProps {
   children: ReactNode;
@@ -22,29 +22,44 @@ export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
+  useEffect(() => {
+    document.documentElement.classList.toggle("home-no-scroll", isHome);
+    document.body.classList.toggle("home-no-scroll", isHome);
+    return () => {
+      document.documentElement.classList.remove("home-no-scroll");
+      document.body.classList.remove("home-no-scroll");
+    };
+  }, [isHome]);
+
   return (
     <LanguageContext.Provider value={language}>
       <ThemeContext.Provider value={theme}>
         <ProgressProvider>
-          <GlowBackground />
-          <GridBackground />
-          <Header />
-          <main
+          <div
             className={cn(
-              "relative mx-auto w-full max-w-7xl px-4 pt-6 pb-24 md:px-6 md:pb-10",
-              isHome
-                ? "overflow-x-hidden max-md:min-h-[calc(100dvh-5rem)] max-md:overflow-y-auto md:h-[calc(100dvh-4rem)] md:overflow-hidden md:pt-4"
-                : "min-h-[calc(100dvh-4rem)]",
+              isHome && "flex h-dvh flex-col overflow-hidden",
             )}
           >
-            <div className={cn(isHome && "md:h-full")}>
-              <div className="mb-4 flex justify-end md:hidden">
-                <ThemeToggle />
+            <GlowBackground />
+            <GridBackground />
+            <Header />
+            <main
+              className={cn(
+                "relative mx-auto w-full max-w-7xl px-4 pt-6 pb-24 md:px-6 md:pb-10",
+                isHome
+                  ? "min-h-0 flex-1 overflow-x-hidden overflow-y-auto md:overflow-hidden md:pt-4 md:pb-0"
+                  : "min-h-[calc(100dvh-5rem)]",
+              )}
+            >
+              <div className={cn(isHome && "h-full md:min-h-0")}>
+                <div className="mb-4 flex justify-end md:hidden">
+                  <ThemeToggle />
+                </div>
+                {children}
               </div>
-              {children}
-            </div>
-          </main>
-          <BottomNav />
+            </main>
+            <BottomNav />
+          </div>
         </ProgressProvider>
       </ThemeContext.Provider>
     </LanguageContext.Provider>

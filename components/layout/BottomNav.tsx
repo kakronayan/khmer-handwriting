@@ -33,7 +33,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed right-0 bottom-0 left-0 z-50 border-t border-foreground/10 bg-surface/95 backdrop-blur-lg md:hidden"
+      className="font-battambang fixed right-0 bottom-0 left-0 z-50 border-t border-foreground/10 bg-surface/95 backdrop-blur-lg md:hidden"
       aria-label="Mobile navigation"
     >
       <div className="flex items-stretch justify-around px-2 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
@@ -44,7 +44,7 @@ export function BottomNav() {
               key={href}
               href={href}
               className={cn(
-                "focus-ring flex min-h-[56px] min-w-[64px] flex-1 flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-xs transition-colors",
+                "font-battambang focus-ring flex min-h-[56px] min-w-[64px] flex-1 flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-xs transition-colors",
                 active ? "text-primary" : "text-muted",
               )}
               aria-current={active ? "page" : undefined}

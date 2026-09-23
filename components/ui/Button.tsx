@@ -40,7 +40,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "focus-ring inline-flex items-center justify-center gap-2 rounded-full transition-all duration-200",
+        "focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-full transition-all duration-200 disabled:cursor-not-allowed",
         variants[variant],
         sizes[size],
         glow && variant === "primary" && "glow-primary",
