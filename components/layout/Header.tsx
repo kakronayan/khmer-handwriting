@@ -1,5 +1,6 @@
 "use client";
 
+import { InstallAppButton } from "@/components/pwa/InstallAppButton";
 import { Logo } from "@/components/ui/Logo";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { ProfileAvatar } from "@/components/ui/ProfileAvatar";
@@ -88,6 +89,8 @@ export function Header() {
               </div>
             )}
           </div>
+
+          <InstallAppButton variant="icon" />
 
           <Link
             href="/support"

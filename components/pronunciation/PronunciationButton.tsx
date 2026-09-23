@@ -1,19 +1,23 @@
 "use client";
 
 import { useLanguage } from "@/hooks/useLanguage";
-import { speakCharacter, stopSpeaking } from "@/lib/pronunciation";
+import { speakCharacter, speakText, stopSpeaking } from "@/lib/pronunciation";
 import { cn } from "@/lib/utils";
 import { Volume2 } from "lucide-react";
 import { useState } from "react";
 
 interface PronunciationButtonProps {
-  characterId: string;
+  characterId?: string;
+  text?: string;
+  audioFile?: string;
   variant?: "default" | "compact" | "card";
   className?: string;
 }
 
 export function PronunciationButton({
   characterId,
+  text,
+  audioFile,
   variant = "default",
   className,
 }: PronunciationButtonProps) {
@@ -28,7 +32,11 @@ export function PronunciationButton({
     }
     setSpeaking(true);
     try {
-      await speakCharacter(characterId);
+      if (text) {
+        await speakText(text, audioFile);
+      } else if (characterId) {
+        await speakCharacter(characterId);
+      }
     } finally {
       setSpeaking(false);
     }

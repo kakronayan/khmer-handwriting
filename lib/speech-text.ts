@@ -16,3 +16,10 @@ export function getSpeechText(character: KhmerCharacter): string {
 export function getAudioPath(characterId: string): string {
   return `/audio/${characterId}.mp3`;
 }
+
+export const HOME_TITLE_SPEECH_TEXT =
+  "រៀនសរសេរអក្សរខ្មែរដោយជំហានងាយៗ";
+
+export function getHomeTitleAudioPath(): string {
+  return "/audio/home-title.mp3";
+}

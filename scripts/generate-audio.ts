@@ -2,7 +2,12 @@ import { mkdirSync } from "node:fs";
 import path from "node:path";
 import { EdgeTTS } from "node-edge-tts";
 import { characters } from "../data/characters";
-import { getAudioPath, getSpeechText } from "../lib/speech-text";
+import {
+  getAudioPath,
+  getHomeTitleAudioPath,
+  getSpeechText,
+  HOME_TITLE_SPEECH_TEXT,
+} from "../lib/speech-text";
 
 // Clear Khmer female voice (Microsoft Edge TTS: Sreymom)
 const VOICE = "km-KH-SreymomNeural";
@@ -39,8 +44,21 @@ async function main() {
     }
   }
 
-  console.log(`\nGenerated ${generated}/${characters.length} files in ${OUTPUT_DIR}`);
-  console.log(`Audio paths follow ${getAudioPath("<id>")}`);
+  const homeTitlePath = path.join(OUTPUT_DIR, "home-title.mp3");
+  process.stdout.write(`Generating home-title (${HOME_TITLE_SPEECH_TEXT})... `);
+
+  try {
+    await tts.ttsPromise(HOME_TITLE_SPEECH_TEXT, homeTitlePath);
+    generated += 1;
+    console.log("done");
+  } catch (error) {
+    console.log("failed");
+    console.error(error);
+  }
+
+  console.log(`\nGenerated ${generated}/${characters.length + 1} files in ${OUTPUT_DIR}`);
+  console.log(`Character audio paths follow ${getAudioPath("<id>")}`);
+  console.log(`Home title audio path: ${getHomeTitleAudioPath()}`);
 }
 
 void main();

@@ -57,22 +57,32 @@ function speakWithBrowser(text: string): Promise<void> {
   });
 }
 
+export async function speakText(
+  text: string,
+  audioPath?: string,
+): Promise<void> {
+  if (typeof window === "undefined") return;
+
+  stopSpeaking();
+
+  if (audioPath) {
+    try {
+      await playAudioFile(audioPath);
+      return;
+    } catch {
+      // Fall back to browser speech when the MP3 is missing or blocked.
+    }
+  }
+
+  await speakWithBrowser(text);
+}
+
 export async function speakCharacter(characterId: string): Promise<void> {
   const character = getCharacterById(characterId);
   if (!character || typeof window === "undefined") return;
 
-  stopSpeaking();
-
   const audioPath = character.audioFile ?? getAudioPath(character.id);
-
-  try {
-    await playAudioFile(audioPath);
-    return;
-  } catch {
-    // Fall back to browser speech when the MP3 is missing or blocked.
-  }
-
-  await speakWithBrowser(getSpeechText(character));
+  await speakText(getSpeechText(character), audioPath);
 }
 
 export function stopSpeaking(): void {

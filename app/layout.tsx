@@ -1,11 +1,44 @@
 import { AppShell } from "@/components/layout/AppShell";
-import type { Metadata } from "next";
+import { assetPath } from "@/lib/asset-path";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "សរសេរខ្មែរ — Khmer Handwriting",
   description:
     "រៀនសរសេរអក្សរខ្មែរដោយជំហានងាយៗ — Learn Khmer handwriting step by step",
+  applicationName: "Khmer Handwriting",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "សរសេរខ្មែរ",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: [
+      { url: assetPath("/icons/icon.svg"), type: "image/svg+xml" },
+      { url: assetPath("/icons/icon-192.png"), sizes: "192x192", type: "image/png" },
+    ],
+    apple: [
+      {
+        url: assetPath("/icons/apple-touch-icon.png"),
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#0d9488" },
+    { media: "(prefers-color-scheme: dark)", color: "#050a18" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 const themeScript = `

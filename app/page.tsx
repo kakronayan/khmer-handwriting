@@ -10,6 +10,10 @@ import { Logo } from "@/components/ui/Logo";
 import { ProfileAvatar } from "@/components/ui/ProfileAvatar";
 import { characters } from "@/data/characters";
 import { useLanguage } from "@/hooks/useLanguage";
+import {
+  getHomeTitleAudioPath,
+  HOME_TITLE_SPEECH_TEXT,
+} from "@/lib/speech-text";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -114,7 +118,12 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <PronunciationButton characterId="ka" variant="card" className="mb-5" />
+          <PronunciationButton
+            text={HOME_TITLE_SPEECH_TEXT}
+            audioFile={getHomeTitleAudioPath()}
+            variant="card"
+            className="mb-5"
+          />
 
           <div className="flex flex-wrap gap-6">
             <div>

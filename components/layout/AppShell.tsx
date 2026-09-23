@@ -1,5 +1,6 @@
 "use client";
 
+import { InstallAppButton } from "@/components/pwa/InstallAppButton";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { GlowBackground } from "@/components/layout/GlowBackground";
 import { GridBackground } from "@/components/layout/GridBackground";
@@ -8,6 +9,7 @@ import { ProgressProvider } from "@/components/providers/ProgressProvider";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { LanguageContext, useLanguageState } from "@/hooks/useLanguage";
 import { ThemeContext, useThemeState } from "@/hooks/useTheme";
+import { registerServiceWorker } from "@/lib/pwa";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
@@ -21,6 +23,10 @@ export function AppShell({ children }: AppShellProps) {
   const theme = useThemeState();
   const pathname = usePathname();
   const isHome = pathname === "/";
+
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle("home-no-scroll", isHome);
@@ -52,7 +58,8 @@ export function AppShell({ children }: AppShellProps) {
               )}
             >
               <div className={cn(isHome && "h-full md:min-h-0")}>
-                <div className="mb-4 flex justify-end md:hidden">
+                <div className="mb-4 flex items-center justify-end gap-2 md:hidden">
+                  <InstallAppButton variant="icon" />
                   <ThemeToggle />
                 </div>
                 {children}

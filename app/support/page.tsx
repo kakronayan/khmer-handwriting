@@ -1,5 +1,6 @@
 "use client";
 
+import { InstallAppButton } from "@/components/pwa/InstallAppButton";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -27,6 +28,19 @@ export default function SupportPage() {
       </div>
 
       <div className="space-y-4">
+        <Card className="p-6">
+          <h2 className="font-khmer-serif mb-3 text-lg font-semibold">
+            {t("ដំឡើងកម្មវិធី", "Install app")}
+          </h2>
+          <p className="mb-4 text-sm leading-relaxed text-muted">
+            {t(
+              "ដំឡើងជាលើកដៃ ឬផ្ទាំងអេក្រង់ ដើម្បីបើកដោយផ្ទាល់ដូចកម្មវិធី។",
+              "Install a shortcut on your phone or desktop to open the app directly.",
+            )}
+          </p>
+          <InstallAppButton />
+        </Card>
+
         <Card className="p-6">
           <h2 className="font-khmer-serif mb-2 text-lg font-semibold">
             {t("របៀបប្រើ", "How to use")}
