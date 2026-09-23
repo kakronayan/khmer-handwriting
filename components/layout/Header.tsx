@@ -89,12 +89,13 @@ export function Header() {
             )}
           </div>
 
-          <button
+          <Link
+            href="/support"
             className="font-battambang focus-ring flex h-9 w-9 items-center justify-center rounded-full border border-foreground/10 text-muted hover:text-foreground"
             aria-label={t("ជំនួយ", "Help")}
           >
             <HelpCircle className="h-5 w-5" />
-          </button>
+          </Link>
 
           <ProfileAvatar aria-label={t("រូបភាពប្រវត្តិ", "Profile avatar")} />
         </div>
