@@ -14,13 +14,13 @@ const variants: Record<ButtonVariant, string> = {
   primary:
     "bg-primary text-surface font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed",
   secondary:
-    "bg-white/10 text-white hover:bg-white/15 disabled:opacity-50 disabled:cursor-not-allowed",
+    "bg-foreground/10 text-foreground hover:bg-foreground/15 disabled:opacity-50 disabled:cursor-not-allowed",
   ghost:
-    "border border-white/20 bg-transparent text-white hover:bg-white/5 disabled:opacity-50",
+    "border border-foreground/20 bg-transparent text-foreground hover:bg-foreground/5 disabled:opacity-50",
   danger:
     "bg-red-400/90 text-white hover:bg-red-400 disabled:opacity-50",
   outline:
-    "border border-white/20 bg-transparent text-white hover:border-primary/50 hover:text-primary disabled:opacity-50",
+    "border border-foreground/20 bg-transparent text-foreground hover:border-primary/50 hover:text-primary disabled:opacity-50",
 };
 
 const sizes: Record<string, string> = {

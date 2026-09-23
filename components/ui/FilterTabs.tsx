@@ -34,7 +34,7 @@ export function FilterTabs({ tabs, activeId, onChange, lang }: FilterTabsProps) 
               "focus-ring rounded-full px-5 py-2 text-sm font-medium transition-all",
               isActive
                 ? "bg-primary text-surface"
-                : "bg-white/5 text-muted hover:bg-white/10 hover:text-white",
+                : "bg-foreground/5 text-muted hover:bg-foreground/10 hover:text-foreground",
             )}
           >
             {lang === "km" ? tab.labelKm : tab.labelEn}

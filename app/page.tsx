@@ -7,6 +7,7 @@ import { useProgressContext } from "@/components/providers/ProgressProvider";
 import { Button } from "@/components/ui/Button";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Logo } from "@/components/ui/Logo";
+import { ProfileAvatar } from "@/components/ui/ProfileAvatar";
 import { characters } from "@/data/characters";
 import { useLanguage } from "@/hooks/useLanguage";
 import Link from "next/link";
@@ -20,11 +21,7 @@ export default function HomePage() {
       {/* Mobile header */}
       <div className="mb-6 flex items-center justify-between md:hidden">
         <Logo compact />
-        <div
-          className="h-9 w-9 rounded-full bg-amber-200/80"
-          role="img"
-          aria-label={t("រូបភាពប្រវត្តិ", "Profile")}
-        />
+        <ProfileAvatar aria-label={t("រូបភាពប្រវត្តិ", "Profile")} />
       </div>
 
       {/* Mobile home */}
@@ -86,25 +83,25 @@ export default function HomePage() {
       </div>
 
       {/* Desktop home */}
-      <div className="hidden md:grid md:grid-cols-2 md:items-center md:gap-12 lg:gap-16">
-        <div>
-          <p className="mb-4 text-sm text-gold">
+      <div className="hidden md:grid md:h-full md:min-h-0 md:grid-cols-2 md:items-center md:gap-8 lg:gap-12">
+        <div className="min-w-0">
+          <p className="mb-3 text-sm text-gold">
             {t("រៀន • សរសេរ • អនុវត្ត • ចងចាំ", "Learn • Write • Practice • Remember")}
           </p>
-          <h1 className="font-khmer-serif mb-4 text-4xl leading-tight font-bold lg:text-5xl">
+          <h1 className="font-khmer-serif mb-3 text-3xl leading-tight font-bold lg:text-4xl">
             {t(
               "រៀនសរសេរអក្សរខ្មែរដោយជំហានងាយៗ",
               "Learn Khmer handwriting step by step",
             )}
           </h1>
-          <p className="mb-8 max-w-lg text-muted">
+          <p className="mb-5 max-w-lg text-sm text-muted lg:text-base">
             {t(
               "មើលលំដាប់ខ្សែ អនុវត្តដោយដៃ និងទទួលបានការកែម្អតម្រាមៗ។",
               "Watch stroke order, practice by hand, and get instant feedback.",
             )}
           </p>
 
-          <div className="mb-8 flex flex-wrap gap-4">
+          <div className="mb-5 flex flex-wrap gap-3">
             <Link href="/learn">
               <Button variant="primary" glow size="lg">
                 {t("ចាប់ផ្តើមរៀន", "Start Learning")}
@@ -117,9 +114,9 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <PronunciationButton characterId="ka" variant="card" className="mb-8" />
+          <PronunciationButton characterId="ka" variant="card" className="mb-5" />
 
-          <div className="flex flex-wrap gap-8">
+          <div className="flex flex-wrap gap-6">
             <div>
               <div className="text-2xl font-bold text-primary">
                 {progress.learnedCount}/{progress.totalCharacters}
@@ -140,7 +137,7 @@ export default function HomePage() {
               </div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-foreground">
                 {progress.streakDays}
               </div>
               <div className="text-sm text-muted">
@@ -150,9 +147,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div>
+        <div className="flex h-full w-full min-w-0 flex-col items-center justify-center">
           <CharacterOrb variant="desktop" centerId="ka" />
-          <div className="mt-6 flex justify-end gap-6 text-xs text-muted">
+          <div className="mt-6 flex justify-center gap-6 text-xs text-muted">
             <span className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full bg-primary" />
               {t("បានរៀន", "Learned")}

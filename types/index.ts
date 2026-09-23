@@ -1,6 +1,13 @@
 export type LearningStatus = "learned" | "in_progress" | "not_started";
 
-export type CharacterCategory = "consonant" | "vowel" | "subscript" | "number";
+export type CharacterCategory =
+  | "consonant"
+  | "vowel"
+  | "subscript"
+  | "mark"
+  | "number";
+
+export type VowelType = "full" | "dependent";
 
 export interface StrokePath {
   id: number;
@@ -20,7 +27,10 @@ export interface KhmerCharacter {
   pronunciation: string;
   ipa: string;
   category: CharacterCategory;
+  vowelType?: VowelType;
   group: number;
+  meaningKm?: string;
+  meaningEn?: string;
   strokeCount: number;
   exampleWord: string;
   exampleMeaningKm: string;

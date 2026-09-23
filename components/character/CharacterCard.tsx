@@ -54,7 +54,7 @@ export function CharacterCard({
         className={cn(
           "font-khmer-serif leading-none",
           charSizes[size],
-          learned || inProgress ? "text-white" : "text-white/25",
+          learned || inProgress ? "text-foreground" : "text-foreground/25",
         )}
       >
         {character}

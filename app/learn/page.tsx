@@ -5,14 +5,18 @@ import { Card } from "@/components/ui/Card";
 import { FilterTabs } from "@/components/ui/FilterTabs";
 import { useLanguage } from "@/hooks/useLanguage";
 import { formatKhmerNumber } from "@/lib/utils";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
 const categoryTabs = [
   { id: "consonant", labelKm: "ព្យញ្ជនៈ", labelEn: "Consonants" },
-  { id: "vowel", labelKm: "ស្រៈ", labelEn: "Vowels" },
-  { id: "subscript", labelKm: "ជើងអក្សរ", labelEn: "Subscripts" },
-  { id: "number", labelKm: "លេខខ្មែរ", labelEn: "Numbers" },
+  { id: "vowel-full", labelKm: "ស្រៈពេញតួ", labelEn: "Full vowels" },
+  { id: "vowel-dependent", labelKm: "ស្រៈនិស្ស័យ", labelEn: "Dependent vowels" },
+  { id: "mark", labelKm: "ស្រ:បម្រុង", labelEn: "Subscript marks" },
+  { id: "subscript", labelKm: "មានប៉ន្មានតួ", labelEn: "Subscript forms" },
 ];
+
+const categoryIds = new Set(categoryTabs.map((tab) => tab.id));
 
 const steps = [
   {
@@ -45,9 +49,17 @@ const steps = [
   },
 ];
 
-export default function LearnPage() {
+function LearnPageContent() {
   const { t, lang } = useLanguage();
+  const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState("consonant");
+
+  useEffect(() => {
+    const category = searchParams.get("category");
+    if (category && categoryIds.has(category)) {
+      setActiveCategory(category);
+    }
+  }, [searchParams]);
 
   return (
     <div>
@@ -89,7 +101,27 @@ export default function LearnPage() {
 
       <div className="mt-10">
         {activeCategory === "consonant" ? (
-          <CharacterGrid columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6" />
+          <CharacterGrid
+            category="consonant"
+            columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+          />
+        ) : activeCategory === "vowel-full" ? (
+          <CharacterGrid
+            category="vowel"
+            vowelType="full"
+            columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+          />
+        ) : activeCategory === "vowel-dependent" ? (
+          <CharacterGrid
+            category="vowel"
+            vowelType="dependent"
+            columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+          />
+        ) : activeCategory === "mark" ? (
+          <CharacterGrid
+            category="mark"
+            columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+          />
         ) : (
           <div className="glass-card rounded-2xl p-12 text-center text-muted">
             {t(
@@ -100,5 +132,13 @@ export default function LearnPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function LearnPage() {
+  return (
+    <Suspense>
+      <LearnPageContent />
+    </Suspense>
   );
 }

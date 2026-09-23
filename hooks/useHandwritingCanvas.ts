@@ -11,6 +11,9 @@ interface UseHandwritingCanvasOptions {
 }
 
 export function useHandwritingCanvas(options: UseHandwritingCanvasOptions = {}) {
+  const onStrokeCompleteRef = useRef(options.onStrokeComplete);
+  onStrokeCompleteRef.current = options.onStrokeComplete;
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [strokes, setStrokes] = useState<CanvasStroke[]>([]);
@@ -86,16 +89,14 @@ export function useHandwritingCanvas(options: UseHandwritingCanvasOptions = {}) 
   const finishStroke = useCallback(() => {
     if (currentStrokeRef.current.length > 0) {
       const newStroke: CanvasStroke = { points: [...currentStrokeRef.current] };
-      setStrokes((prev) => {
-        const next = [...prev, newStroke];
-        options.onStrokeComplete?.(next.length);
-        return next;
-      });
+      const completedCount = strokes.length + 1;
+      setStrokes((prev) => [...prev, newStroke]);
+      onStrokeCompleteRef.current?.(completedCount);
       currentStrokeRef.current = [];
     }
     setIsDrawing(false);
     redraw();
-  }, [options, redraw]);
+  }, [strokes.length, redraw]);
 
   const handlePointerUp = useCallback(() => {
     finishStroke();

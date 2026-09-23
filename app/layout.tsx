@@ -1,12 +1,12 @@
 import { AppShell } from "@/components/layout/AppShell";
 import type { Metadata } from "next";
-import { Inter, Noto_Sans_Khmer, Noto_Serif_Khmer } from "next/font/google";
+import { Battambang, Inter, Noto_Serif_Khmer } from "next/font/google";
 import "./globals.css";
 
-const notoSansKhmer = Noto_Sans_Khmer({
-  variable: "--font-noto-sans-khmer",
+const battambang = Battambang({
+  variable: "--font-battambang",
   subsets: ["khmer"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["100", "300", "400", "700", "900"],
 });
 
 const notoSerifKhmer = Noto_Serif_Khmer({
@@ -26,13 +26,26 @@ export const metadata: Metadata = {
     "រៀនសរសេរអក្សរខ្មែរដោយជំហានងាយៗ — Learn Khmer handwriting step by step",
 };
 
+const themeScript = `
+(function () {
+  try {
+    var theme = localStorage.getItem("khmer-handwriting-theme");
+    if (theme === "dark") document.documentElement.classList.add("dark");
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="km"
-      className={`${notoSansKhmer.variable} ${notoSerifKhmer.variable} ${inter.variable} h-full`}
+      className={`${battambang.variable} ${notoSerifKhmer.variable} ${inter.variable} h-full`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full antialiased">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="min-h-full font-sans antialiased">
         <AppShell>{children}</AppShell>
       </body>
     </html>

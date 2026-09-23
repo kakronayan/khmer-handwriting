@@ -12,6 +12,7 @@ import type { LearningStatus, UserProgress } from "@/types";
 export type { LearningStatus, UserProgress };
 
 let progressCache: UserProgress = getDefaultProgress();
+const serverSnapshot: UserProgress = getDefaultProgress();
 let hydrated = false;
 const listeners = new Set<() => void>();
 
@@ -33,7 +34,7 @@ function getSnapshot(): UserProgress {
 }
 
 function getServerSnapshot(): UserProgress {
-  return getDefaultProgress();
+  return serverSnapshot;
 }
 
 export function useProgress() {

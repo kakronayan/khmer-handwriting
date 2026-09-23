@@ -1,6 +1,8 @@
 "use client";
 
 import { Logo } from "@/components/ui/Logo";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { ProfileAvatar } from "@/components/ui/ProfileAvatar";
 import { useLanguage } from "@/hooks/useLanguage";
 import { cn } from "@/lib/utils";
 import { ChevronDown, HelpCircle } from "lucide-react";
@@ -29,7 +31,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 hidden border-b border-white/5 bg-surface/80 backdrop-blur-md md:block">
+    <header className="sticky top-0 z-40 hidden border-b border-foreground/5 bg-surface/80 backdrop-blur-md md:block">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Logo />
 
@@ -42,7 +44,7 @@ export function Header() {
                 "focus-ring rounded-lg px-4 py-2 text-sm transition-colors",
                 isActive(item.href)
                   ? "font-medium text-primary"
-                  : "text-muted hover:text-white",
+                  : "text-muted hover:text-foreground",
               )}
             >
               {t(item.labelKm, item.labelEn)}
@@ -51,10 +53,12 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
+
           <div className="relative">
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="focus-ring flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-muted hover:text-white"
+              className="focus-ring flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-muted hover:text-foreground"
               aria-label={t("ជ្រើសរើសភាសា", "Select language")}
               aria-expanded={langOpen}
             >
@@ -64,7 +68,7 @@ export function Header() {
             {langOpen && (
               <div className="glass-card absolute top-full right-0 mt-1 min-w-[100px] rounded-xl py-1">
                 <button
-                  className="focus-ring w-full px-4 py-2 text-left text-sm hover:bg-white/5"
+                  className="focus-ring w-full px-4 py-2 text-left text-sm hover:bg-foreground/5"
                   onClick={() => {
                     setLang("km");
                     setLangOpen(false);
@@ -73,7 +77,7 @@ export function Header() {
                   ខ្មែរ
                 </button>
                 <button
-                  className="focus-ring w-full px-4 py-2 text-left text-sm hover:bg-white/5"
+                  className="focus-ring w-full px-4 py-2 text-left text-sm hover:bg-foreground/5"
                   onClick={() => {
                     setLang("en");
                     setLangOpen(false);
@@ -86,17 +90,13 @@ export function Header() {
           </div>
 
           <button
-            className="focus-ring flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-muted hover:text-white"
+            className="focus-ring flex h-9 w-9 items-center justify-center rounded-full border border-foreground/10 text-muted hover:text-foreground"
             aria-label={t("ជំនួយ", "Help")}
           >
             <HelpCircle className="h-5 w-5" />
           </button>
 
-          <div
-            className="h-9 w-9 rounded-full bg-amber-200/80"
-            role="img"
-            aria-label={t("រូបភាពប្រវត្តិ", "Profile avatar")}
-          />
+          <ProfileAvatar aria-label={t("រូបភាពប្រវត្តិ", "Profile avatar")} />
         </div>
       </div>
     </header>

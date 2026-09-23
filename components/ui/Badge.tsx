@@ -12,7 +12,7 @@ export function Badge({ children, variant = "primary", className }: BadgeProps) 
     primary: "bg-primary/20 text-primary border-primary/30",
     gold: "bg-gold/20 text-gold border-gold/30",
     success: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-    muted: "bg-white/5 text-muted border-white/10",
+    muted: "bg-foreground/5 text-muted border-foreground/10",
   };
 
   return (

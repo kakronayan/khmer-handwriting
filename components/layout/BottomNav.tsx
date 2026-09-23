@@ -33,7 +33,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed right-0 bottom-0 left-0 z-50 border-t border-white/10 bg-surface/95 backdrop-blur-lg md:hidden"
+      className="fixed right-0 bottom-0 left-0 z-50 border-t border-foreground/10 bg-surface/95 backdrop-blur-lg md:hidden"
       aria-label="Mobile navigation"
     >
       <div className="flex items-stretch justify-around px-2 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">

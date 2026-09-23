@@ -26,7 +26,7 @@ export function ProgressBar({
         </div>
       )}
       <div
-        className="h-2 overflow-hidden rounded-full bg-white/10"
+        className="h-2 overflow-hidden rounded-full bg-foreground/10"
         role="progressbar"
         aria-valuenow={pct}
         aria-valuemin={0}

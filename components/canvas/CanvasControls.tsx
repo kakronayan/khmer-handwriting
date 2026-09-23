@@ -33,7 +33,7 @@ export function CanvasControls({
         <button
           onClick={onUndo}
           disabled={!canUndo}
-          className="focus-ring flex h-11 w-11 items-center justify-center rounded-full bg-white/10 disabled:opacity-40"
+          className="focus-ring flex h-11 w-11 items-center justify-center rounded-full bg-foreground/10 disabled:opacity-40"
           aria-label={t("មិនធ្វើវិញ", "Undo")}
         >
           <Undo2 className="h-5 w-5" />
@@ -41,14 +41,14 @@ export function CanvasControls({
         <button
           onClick={onRedo}
           disabled={!canRedo}
-          className="focus-ring flex h-11 w-11 items-center justify-center rounded-full bg-white/10 disabled:opacity-40"
+          className="focus-ring flex h-11 w-11 items-center justify-center rounded-full bg-foreground/10 disabled:opacity-40"
           aria-label={t("ធ្វើឡើងវិញ", "Redo")}
         >
           <Redo2 className="h-5 w-5" />
         </button>
         <button
           onClick={onClear}
-          className="focus-ring rounded-full bg-white/10 px-4 py-2.5 text-sm"
+          className="focus-ring rounded-full bg-foreground/10 px-4 py-2.5 text-sm"
           aria-label={t("សម្អាត", "Clear")}
         >
           {t("សម្អាត", "Clear")}

@@ -5,6 +5,7 @@ import { PronunciationButton } from "@/components/pronunciation/PronunciationBut
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { getCharacterById } from "@/data/characters";
+import type { KhmerCharacter } from "@/types";
 import { useLanguage } from "@/hooks/useLanguage";
 import { formatKhmerNumber } from "@/lib/utils";
 import { PenLine } from "lucide-react";
@@ -22,11 +23,11 @@ export default function CharacterDetailPage({
 
   if (!character) notFound();
 
+  const categoryLabel = getCategoryLabel(character, t);
+
   return (
     <div>
-      <p className="mb-2 text-sm text-gold">
-        {t("ព្យញ្ជនៈ • វគ្គទី ១", "Consonants • Group 1")}
-      </p>
+      <p className="mb-2 text-sm text-gold">{categoryLabel}</p>
       <h1 className="font-khmer-serif mb-2 text-3xl font-bold md:text-4xl">
         {character.nameKm}
       </h1>
@@ -59,7 +60,7 @@ export default function CharacterDetailPage({
                   aria-hidden="true"
                 />
               ))}
-              <span className="font-khmer-serif text-[120px] leading-none text-white">
+              <span className="font-khmer-serif text-[120px] leading-none text-foreground">
                 {character.character}
               </span>
             </div>
@@ -87,13 +88,13 @@ export default function CharacterDetailPage({
                         ? "bg-primary text-surface"
                         : i === 1
                           ? "bg-gold text-surface"
-                          : "bg-white/10 text-muted"
+                          : "bg-foreground/10 text-muted"
                     }`}
                   >
                     {formatKhmerNumber(stroke.id)}
                   </div>
                   {i < character.strokes.length - 1 && (
-                    <div className="h-px w-4 bg-white/20" aria-hidden="true" />
+                    <div className="h-px w-4 bg-foreground/20" aria-hidden="true" />
                   )}
                 </div>
               ))}
@@ -113,7 +114,7 @@ export default function CharacterDetailPage({
                 <div className="text-xs text-muted">
                   {t("ប្រភេទ", "Class")}
                 </div>
-                <div>{t("ព្យញ្ជនៈ", "Consonant")}</div>
+                <div>{getClassLabel(character, t)}</div>
               </div>
               <div>
                 <div className="text-xs text-muted">
@@ -122,6 +123,9 @@ export default function CharacterDetailPage({
                 <div>{character.exampleWord}</div>
               </div>
             </div>
+            {character.meaningKm && (
+              <p className="mt-4 text-sm text-muted">{character.meaningKm}</p>
+            )}
             <div className="mt-4">
               <PronunciationButton characterId={character.id} />
             </div>
@@ -147,4 +151,45 @@ export default function CharacterDetailPage({
       </div>
     </div>
   );
+}
+
+function getCategoryLabel(
+  character: KhmerCharacter,
+  t: (km: string, en: string) => string,
+): string {
+  if (character.category === "consonant") {
+    return t(
+      `ព្យញ្ជនៈ • វគ្គទី ${character.group}`,
+      `Consonants • Group ${character.group}`,
+    );
+  }
+  if (character.category === "vowel" && character.vowelType === "full") {
+    return t("ស្រៈពេញតួ", "Full vowels");
+  }
+  if (character.category === "vowel" && character.vowelType === "dependent") {
+    return t("ស្រៈនិស្ស័យ", "Dependent vowels");
+  }
+  if (character.category === "mark") {
+    return t("ស្រ:បម្រុង", "Subscript marks");
+  }
+  return t("អក្សរខ្មែរ", "Khmer characters");
+}
+
+function getClassLabel(
+  character: KhmerCharacter,
+  t: (km: string, en: string) => string,
+): string {
+  if (character.category === "consonant") {
+    return t("ព្យញ្ជនៈ", "Consonant");
+  }
+  if (character.category === "vowel" && character.vowelType === "full") {
+    return t("ស្រៈពេញតួ", "Full vowel");
+  }
+  if (character.category === "vowel" && character.vowelType === "dependent") {
+    return t("ស្រៈនិស្ស័យ", "Dependent vowel");
+  }
+  if (character.category === "mark") {
+    return t("ស្រ:បម្រុង", "Subscript mark");
+  }
+  return t("អក្សរ", "Character");
 }

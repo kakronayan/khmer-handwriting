@@ -92,7 +92,7 @@ export const HandwritingCanvas = forwardRef<
         {/* Faint character guide */}
         {showGuide && character && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <span className="font-khmer-serif text-[140px] leading-none text-white/8 select-none">
+            <span className="font-khmer-serif text-[140px] leading-none text-foreground/8 select-none">
               {character.character}
             </span>
           </div>

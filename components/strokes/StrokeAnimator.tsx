@@ -68,7 +68,7 @@ export function StrokeAnimator({ character }: StrokeAnimatorProps) {
               })}
             </svg>
 
-            <span className="pointer-events-none font-khmer-serif text-7xl text-white/15 select-none">
+            <span className="pointer-events-none font-khmer-serif text-7xl text-foreground/15 select-none">
               {character.character}
             </span>
           </div>

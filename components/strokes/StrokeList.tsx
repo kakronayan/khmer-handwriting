@@ -25,7 +25,7 @@ export function StrokeList({ strokes, activeIndex, onSelect }: StrokeListProps) 
             role="listitem"
             className={cn(
               "flex cursor-pointer items-center gap-4 transition-all",
-              isActive ? "border-primary/40 glow-primary" : "hover:bg-white/5",
+              isActive ? "border-primary/40 glow-primary" : "hover:bg-foreground/5",
             )}
             onClick={() => onSelect?.(index)}
             padding="sm"
@@ -33,13 +33,13 @@ export function StrokeList({ strokes, activeIndex, onSelect }: StrokeListProps) 
             <div
               className={cn(
                 "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold",
-                isActive ? "bg-gold text-surface" : "bg-white/10 text-muted",
+                isActive ? "bg-gold text-surface" : "bg-foreground/10 text-muted",
               )}
             >
               {formatKhmerNumber(stroke.id)}
             </div>
             <div>
-              <p className={cn("text-sm", isActive ? "text-white" : "text-muted")}>
+              <p className={cn("text-sm", isActive ? "text-foreground" : "text-muted")}>
                 {lang === "km" ? stroke.labelKm : stroke.labelEn}
               </p>
             </div>

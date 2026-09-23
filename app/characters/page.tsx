@@ -10,8 +10,9 @@ import { useMemo, useState } from "react";
 const filterTabs = [
   { id: "all", labelKm: "ទាំងអស់", labelEn: "All" },
   { id: "consonant", labelKm: "ព្យញ្ជនៈ", labelEn: "Consonants" },
-  { id: "vowel", labelKm: "ស្រៈ", labelEn: "Vowels" },
-  { id: "number", labelKm: "លេខខ្មែរ", labelEn: "Numbers" },
+  { id: "vowel-full", labelKm: "ស្រៈពេញតួ", labelEn: "Full vowels" },
+  { id: "vowel-dependent", labelKm: "ស្រៈនិស្ស័យ", labelEn: "Dependent vowels" },
+  { id: "mark", labelKm: "ស្រ:បម្រុង", labelEn: "Subscript marks" },
 ];
 
 export default function CharactersPage() {
@@ -22,7 +23,15 @@ export default function CharactersPage() {
   const filteredIds = useMemo(() => {
     return characters
       .filter((c) => {
-        if (filter !== "all" && c.category !== filter) return false;
+        if (filter === "vowel-full") {
+          if (c.category !== "vowel" || c.vowelType !== "full") return false;
+        } else if (filter === "vowel-dependent") {
+          if (c.category !== "vowel" || c.vowelType !== "dependent") {
+            return false;
+          }
+        } else if (filter !== "all" && c.category !== filter) {
+          return false;
+        }
         if (!search) return true;
         const q = search.toLowerCase();
         return (

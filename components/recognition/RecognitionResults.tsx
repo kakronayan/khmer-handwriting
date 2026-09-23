@@ -62,7 +62,7 @@ export function RecognitionResults({
           </span>
           <Badge variant="success">{result.primary.confidence}%</Badge>
         </div>
-        <div className="font-khmer-serif text-center text-8xl text-white">
+        <div className="font-khmer-serif text-center text-8xl text-foreground">
           {result.primary.character}
         </div>
         <div className="mt-4 flex justify-center">

@@ -131,7 +131,7 @@ export default function ProgressPage() {
               padding="sm"
               className="flex items-center gap-4"
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-foreground/5">
                 <item.icon className="h-5 w-5 text-gold" aria-hidden="true" />
               </div>
               <div className="flex-1">

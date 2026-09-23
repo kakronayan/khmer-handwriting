@@ -16,7 +16,7 @@ export function Logo({ compact = false }: LogoProps) {
       </div>
       {!compact && (
         <div className="hidden sm:block">
-          <div className="font-khmer-serif text-sm leading-tight font-semibold text-white">
+          <div className="font-khmer-serif text-sm leading-tight font-semibold text-foreground">
             សរសេរខ្មែរ
           </div>
           <div className="font-inter text-[10px] tracking-widest text-primary uppercase">

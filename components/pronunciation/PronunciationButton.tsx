@@ -36,7 +36,7 @@ export function PronunciationButton({
       <button
         onClick={handleClick}
         className={cn(
-          "focus-ring glass-card flex w-full items-center gap-4 rounded-2xl p-4 transition-colors hover:bg-white/5",
+          "focus-ring glass-card flex w-full items-center gap-4 rounded-2xl p-4 transition-colors hover:bg-foreground/5",
           speaking && "border-primary/30",
           className,
         )}
@@ -93,7 +93,7 @@ export function PronunciationButton({
     <button
       onClick={handleClick}
       className={cn(
-        "focus-ring flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm transition-colors hover:border-primary/30 hover:text-primary",
+        "focus-ring flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2 text-sm transition-colors hover:border-primary/30 hover:text-primary",
         speaking && "border-primary/30 text-primary",
         className,
       )}

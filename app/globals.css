@@ -1,6 +1,24 @@
 @import "tailwindcss";
 
 :root {
+  --background: #f4f7fb;
+  --foreground: #0f172a;
+  --card: rgba(255, 255, 255, 0.82);
+  --card-border: rgba(15, 23, 42, 0.08);
+  --primary: #0d9488;
+  --primary-glow: rgba(13, 148, 136, 0.28);
+  --gold: #b8860b;
+  --gold-glow: rgba(184, 134, 11, 0.22);
+  --muted: #64748b;
+  --danger: #dc2626;
+  --success: #059669;
+  --surface: #ffffff;
+  --font-khmer-sans: var(--font-battambang);
+  --font-khmer-serif: var(--font-noto-serif-khmer);
+  --font-inter: var(--font-inter);
+}
+
+.dark {
   --background: #050a18;
   --foreground: #f0f4f8;
   --card: rgba(15, 25, 45, 0.75);
@@ -13,9 +31,6 @@
   --danger: #f87171;
   --success: #34d399;
   --surface: #0b1224;
-  --font-khmer-sans: var(--font-noto-sans-khmer);
-  --font-khmer-serif: var(--font-noto-serif-khmer);
-  --font-inter: var(--font-inter);
 }
 
 @theme inline {
@@ -26,7 +41,7 @@
   --color-muted: var(--muted);
   --color-surface: var(--surface);
   --color-card: var(--card);
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-battambang), var(--font-inter), system-ui, sans-serif;
   --font-khmer: var(--font-khmer-sans);
   --font-khmer-serif: var(--font-khmer-serif);
 }
@@ -37,6 +52,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-family: var(--font-battambang), var(--font-inter), system-ui, sans-serif;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -56,9 +72,15 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-khmer-sans), var(--font-inter), system-ui, sans-serif;
+  font-family: inherit;
   min-height: 100dvh;
   overflow-x: hidden;
+}
+
+p,
+nav,
+menu {
+  font-family: inherit;
 }
 
 .font-khmer-serif {
@@ -98,8 +120,8 @@ body {
 
 .canvas-grid {
   background-image:
-    linear-gradient(rgba(79, 209, 197, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(79, 209, 197, 0.06) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--primary) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--primary) 8%, transparent) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
