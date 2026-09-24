@@ -61,7 +61,7 @@ export default function HomePage() {
             {t("បន្តមេរៀន", "Continue lesson")}
           </p>
           <CharacterOrb variant="mobile" centerId="ka" />
-          <Link href="/learn" className="mt-6 block">
+          <Link href="/consonants" className="mt-6 block">
             <Button variant="primary" glow size="lg" className="w-full">
               {t("បន្តរៀន", "Continue learning")}
             </Button>
@@ -106,7 +106,7 @@ export default function HomePage() {
           </p>
 
           <div className="mb-5 flex flex-wrap gap-3">
-            <Link href="/learn">
+            <Link href="/consonants">
               <Button variant="primary" glow size="lg">
                 {t("ចាប់ផ្តើមរៀន", "Start Learning")}
               </Button>

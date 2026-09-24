@@ -10,7 +10,7 @@ const items = [
   { href: "/", labelKm: "ទំព័រដើម", labelEn: "Home", icon: Home },
   { href: "/learn", labelKm: "រៀន", labelEn: "Learn", icon: BookOpen },
   {
-    href: "/practice/ka",
+    href: "/consonants",
     labelKm: "អនុវត្ត",
     labelEn: "Practice",
     icon: Dumbbell,
@@ -24,9 +24,11 @@ export function BottomNav() {
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
-    if (href.startsWith("/practice"))
+    if (href.startsWith("/consonants"))
       return (
-        pathname.startsWith("/practice") || pathname === "/recognition"
+        pathname.startsWith("/consonants") ||
+        pathname.startsWith("/practice") ||
+        pathname === "/recognition"
       );
     return pathname.startsWith(href);
   };

@@ -112,9 +112,21 @@ export default function CharacterDetailPage({
               </div>
               <div>
                 <div className="text-xs text-muted">
-                  {t("ប្រភេទ", "Class")}
+                  {t("ចំនួនខ្សែ", "Strokes")}
                 </div>
-                <div>{getClassLabel(character, t)}</div>
+                <div>{formatKhmerNumber(character.strokeCount)}</div>
+              </div>
+              <div>
+                <div className="text-xs text-muted">
+                  {t("កម្រិត", "Level")}
+                </div>
+                <div>
+                  {character.difficulty === "easy"
+                    ? t("ងាយ", "Easy")
+                    : character.difficulty === "hard"
+                      ? t("ពិបាក", "Hard")
+                      : t("មធ្យម", "Medium")}
+                </div>
               </div>
               <div>
                 <div className="text-xs text-muted">

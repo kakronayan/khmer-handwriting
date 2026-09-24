@@ -4,22 +4,22 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "សរសេរខ្មែរ — Khmer Handwriting",
+  title: "រៀន និងសរសេរអក្សរខ្មែរ — Khmer Handwriting",
   description:
     "រៀនសរសេរអក្សរខ្មែរដោយជំហានងាយៗ — Learn Khmer handwriting step by step",
   applicationName: "Khmer Handwriting",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "សរសេរខ្មែរ",
+    title: "រៀន និងសរសេរអក្សរខ្មែរ",
   },
   formatDetection: {
     telephone: false,
   },
   icons: {
     icon: [
-      { url: assetPath("/icons/icon.svg"), type: "image/svg+xml" },
       { url: assetPath("/icons/icon-192.png"), sizes: "192x192", type: "image/png" },
+      { url: assetPath("/icons/icon-512.png"), sizes: "512x512", type: "image/png" },
     ],
     apple: [
       {
@@ -50,6 +50,21 @@ const themeScript = `
 })();
 `;
 
+const pwaScript = `
+(function () {
+  window.__pwaInstallEvent = null;
+  window.addEventListener("beforeinstallprompt", function (event) {
+    event.preventDefault();
+    window.__pwaInstallEvent = event;
+    window.dispatchEvent(new Event("pwa-install-available"));
+  });
+  window.addEventListener("appinstalled", function () {
+    window.__pwaInstallEvent = null;
+    window.dispatchEvent(new Event("pwa-installed"));
+  });
+})();
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
@@ -59,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: pwaScript }} />
       </head>
       <body className="min-h-full font-sans antialiased">
         <AppShell>{children}</AppShell>

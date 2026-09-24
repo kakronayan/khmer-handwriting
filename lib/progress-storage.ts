@@ -5,18 +5,12 @@ const STORAGE_KEY = "khmer-handwriting-progress";
 
 function createDefaultCharacterProgress(): Record<string, CharacterProgress> {
   const map: Record<string, CharacterProgress> = {};
-  characters.forEach((char, index) => {
-    let status: LearningStatus = "not_started";
-    let score = 0;
-    if (index < 3) {
-      status = "learned";
-      score = index === 0 ? 85 : index === 1 ? 92 : 78;
-    }
+  characters.forEach((char) => {
     map[char.id] = {
       characterId: char.id,
-      status,
-      score,
-      practiceCount: status === "learned" ? 3 : 0,
+      status: "not_started",
+      score: 0,
+      practiceCount: 0,
     };
   });
   return map;
@@ -25,15 +19,15 @@ function createDefaultCharacterProgress(): Record<string, CharacterProgress> {
 export function getDefaultProgress(): UserProgress {
   const today = new Date().toISOString().split("T")[0];
   return {
-    learnedCount: 24,
+    learnedCount: 0,
     totalCharacters: TOTAL_CHARACTERS,
-    averageScore: 87,
-    streakDays: 7,
+    averageScore: 0,
+    streakDays: 0,
     lastPracticeDate: today,
-    completedLessons: ["ka", "kha", "ko"],
-    weakCharacters: ["ko"],
+    completedLessons: [],
+    weakCharacters: [],
     characters: createDefaultCharacterProgress(),
-    weeklyActivity: [3, 5, 4, 6, 5, 7, 8],
+    weeklyActivity: [0, 0, 0, 0, 0, 0, 0],
   };
 }
 

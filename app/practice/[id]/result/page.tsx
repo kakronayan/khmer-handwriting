@@ -10,10 +10,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { useProgressContext } from "@/components/providers/ProgressProvider";
 import { use } from "react";
+import type { StrokeFeedback } from "@/types";
+
 interface PracticeResult {
   score: number;
   strokesCompleted: number;
   totalStrokes: number;
+  strokeFeedbacks?: StrokeFeedback[];
 }
 
 function readPracticeResult(id: string): PracticeResult | null {
@@ -41,8 +44,21 @@ export default function PracticeResultPage({
 
   if (!character) notFound();
 
-  const score = result?.score ?? 85;
-  const stars = score >= 90 ? 3 : score >= 80 ? 2 : 1;
+  const score = result?.score ?? 0;
+  const stars = score >= 90 ? 3 : score >= 70 ? 2 : score >= 50 ? 1 : 0;
+  const weakStroke = result?.strokeFeedbacks?.find(
+    (f) => f.status !== "correct",
+  );
+  const feedbackKm = weakStroke
+    ? weakStroke.messageKm
+    : score >= 80
+      ? "ទម្រង់អក្សររបស់អ្នកច្បាស់ល្អ!"
+      : "សាកល្បងសរសេរម្តងទៀតតាមលំដាប់ខ្សែ";
+  const feedbackEn = weakStroke
+    ? weakStroke.messageEn
+    : score >= 80
+      ? "Your character shape is clear!"
+      : "Try writing again following stroke order";
 
   return (
     <div>
@@ -61,10 +77,7 @@ export default function PracticeResultPage({
         </span>
       </h1>
       <p className="mb-8 text-sm text-muted">
-        {t(
-          "ទម្រង់អក្សររបស់អ្នកច្បាស់ល្អ។ សាកល្បងខ្សែទី ២ ឱ្យរលូនជាងនេះ។",
-          "Your character shape is clear. Try making stroke 2 smoother.",
-        )}
+        {t(feedbackKm, feedbackEn)}
       </p>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -131,10 +144,15 @@ export default function PracticeResultPage({
                 Improvement Tip
               </div>
               <div className="text-sm text-muted">
-                {t(
-                  "ធ្វើឱ្យខ្សែទី ២ រលូន និងមានទំងន់ស្មើគ្នា។",
-                  "Make stroke 2 smoother with even pressure.",
-                )}
+                {weakStroke
+                  ? t(
+                      `ផ្តោតលើខ្សែទី ${weakStroke.strokeIndex + 1}: ${weakStroke.messageKm}`,
+                      `Focus on stroke ${weakStroke.strokeIndex + 1}: ${weakStroke.messageEn}`,
+                    )
+                  : t(
+                      "បន្តអនុវត្តឱ្យបានទៀងទាត់",
+                      "Keep practicing consistently",
+                    )}
               </div>
             </div>
           </Card>

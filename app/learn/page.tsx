@@ -1,6 +1,7 @@
 "use client";
 
 import { CharacterGrid } from "@/components/character/CharacterGrid";
+import { ConsonantSelector } from "@/components/character/ConsonantSelector";
 import { Card } from "@/components/ui/Card";
 import { FilterTabs } from "@/components/ui/FilterTabs";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -67,13 +68,20 @@ function LearnPageContent() {
         See → Watch → Draw
       </p>
       <h1 className="font-khmer-serif mb-2 text-3xl font-bold md:text-4xl">
-        {t("រៀនអក្សរខ្មែរ តាមប្រភេទ", "Learn Khmer characters by category")}
+        {activeCategory === "consonant"
+          ? t("រៀនសរសេរអក្សរខ្មែរ", "Learn Khmer Handwriting")
+          : t("រៀនអក្សរខ្មែរ តាមប្រភេទ", "Learn Khmer characters by category")}
       </h1>
       <p className="mb-8 max-w-2xl text-muted">
-        {t(
-          "ជ្រើសរើសមេរៀន ហើយរៀនពីទ្រង់ទ្រាយ សំឡេង និងលំដាប់ខ្សែ។",
-          "Choose a lesson and learn shape, sound, and stroke order.",
-        )}
+        {activeCategory === "consonant"
+          ? t(
+              "ហាត់សរសេរព្យញ្ជនៈខ្មែរ តាមលំដាប់ខ្សែ",
+              "Practice Khmer consonants following correct stroke order",
+            )
+          : t(
+              "ជ្រើសរើសមេរៀន ហើយរៀនពីទ្រង់ទ្រាយ សំឡេង និងលំដាប់ខ្សែ។",
+              "Choose a lesson and learn shape, sound, and stroke order.",
+            )}
       </p>
 
       <FilterTabs
@@ -101,10 +109,13 @@ function LearnPageContent() {
 
       <div className="mt-10">
         {activeCategory === "consonant" ? (
-          <CharacterGrid
-            category="consonant"
-            columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
-          />
+          <div className="space-y-8">
+            <ConsonantSelector hrefPattern="strokes" />
+            <CharacterGrid
+              category="consonant"
+              columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+            />
+          </div>
         ) : activeCategory === "vowel-full" ? (
           <CharacterGrid
             category="vowel"

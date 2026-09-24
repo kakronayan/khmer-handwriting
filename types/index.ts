@@ -19,6 +19,8 @@ export interface StrokePath {
   directionKm: string;
 }
 
+export type Difficulty = "easy" | "medium" | "hard";
+
 export interface KhmerCharacter {
   id: string;
   character: string;
@@ -32,6 +34,7 @@ export interface KhmerCharacter {
   meaningKm?: string;
   meaningEn?: string;
   strokeCount: number;
+  difficulty?: Difficulty;
   exampleWord: string;
   exampleMeaningKm: string;
   strokes: StrokePath[];
@@ -67,6 +70,16 @@ export interface CanvasPoint {
 
 export interface CanvasStroke {
   points: CanvasPoint[];
+}
+
+export type StrokeFeedbackStatus = "correct" | "retry" | "wrong_direction";
+
+export interface StrokeFeedback {
+  strokeIndex: number;
+  status: StrokeFeedbackStatus;
+  score: number;
+  messageKm: string;
+  messageEn: string;
 }
 
 export interface RecognitionResult {

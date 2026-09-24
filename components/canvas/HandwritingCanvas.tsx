@@ -1,27 +1,41 @@
 "use client";
 
 import { CanvasControls } from "@/components/canvas/CanvasControls";
+import { KhmerStrokeSvg } from "@/components/strokes/KhmerStrokeSvg";
 import { useHandwritingCanvas } from "@/hooks/useHandwritingCanvas";
 import { useLanguage } from "@/hooks/useLanguage";
 import { cn } from "@/lib/utils";
 import type { KhmerCharacter } from "@/types";
-import { forwardRef, useImperativeHandle } from "react";
+import type { CanvasStroke, StrokeFeedback } from "@/types";
+import { forwardRef, useImperativeHandle, useState } from "react";
 
 export interface HandwritingCanvasRef {
   getImageData: () => ImageData | null;
+  getStrokes: () => CanvasStroke[];
   clear: () => void;
   strokeCount: number;
+}
+
+interface StrokeAnimationState {
+  currentIndex: number;
+  progress: number;
+  isPlaying: boolean;
+  isComplete: boolean;
 }
 
 interface HandwritingCanvasProps {
   character?: KhmerCharacter;
   showGuide?: boolean;
   showStrokeIndicators?: boolean;
+  strokeAnimation?: StrokeAnimationState;
   showControls?: boolean;
   controlsLayout?: "horizontal" | "compact";
   circular?: boolean;
   className?: string;
   onStrokeComplete?: (count: number) => void;
+  strokeFeedbacks?: StrokeFeedback[];
+  guideVisible?: boolean;
+  onToggleGuide?: () => void;
 }
 
 export const HandwritingCanvas = forwardRef<
@@ -32,19 +46,35 @@ export const HandwritingCanvas = forwardRef<
     character,
     showGuide = true,
     showStrokeIndicators = true,
+    strokeAnimation,
     showControls = true,
     controlsLayout = "horizontal",
     circular = true,
     className,
     onStrokeComplete,
+    strokeFeedbacks,
+    guideVisible: guideVisibleProp,
+    onToggleGuide,
   },
   ref,
 ) {
   const { t } = useLanguage();
+  const [internalGuideVisible, setInternalGuideVisible] = useState(true);
+  const guideVisible = guideVisibleProp ?? internalGuideVisible;
   const canvas = useHandwritingCanvas({ onStrokeComplete });
+
+  const strokes = character?.strokes ?? [];
+  const showAnimation =
+    strokeAnimation &&
+    strokes.length > 0 &&
+    (strokeAnimation.isPlaying ||
+      strokeAnimation.isComplete ||
+      strokeAnimation.currentIndex > 0 ||
+      strokeAnimation.progress > 0);
 
   useImperativeHandle(ref, () => ({
     getImageData: canvas.getImageData,
+    getStrokes: canvas.getStrokes,
     clear: canvas.clear,
     strokeCount: canvas.strokeCount,
   }));
@@ -61,7 +91,6 @@ export const HandwritingCanvas = forwardRef<
         role="application"
         aria-label={t("ផ្ទៃសរសេរ", "Drawing canvas")}
       >
-        {/* Guide rings */}
         <div
           className="pointer-events-none absolute inset-[8%] rounded-full border border-gold/30"
           aria-hidden="true"
@@ -71,7 +100,6 @@ export const HandwritingCanvas = forwardRef<
           aria-hidden="true"
         />
 
-        {/* Compass dots */}
         {[
           { top: "4%", left: "50%", color: "bg-primary" },
           { top: "50%", left: "4%", color: "bg-gold" },
@@ -89,8 +117,7 @@ export const HandwritingCanvas = forwardRef<
           />
         ))}
 
-        {/* Faint character guide */}
-        {showGuide && character && (
+        {showGuide && guideVisible && character && !showAnimation && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <span className="font-khmer-serif text-[140px] leading-none text-foreground/8 select-none">
               {character.character}
@@ -98,8 +125,7 @@ export const HandwritingCanvas = forwardRef<
           </div>
         )}
 
-        {/* SVG stroke guide overlay */}
-        {showGuide && character && (
+        {showGuide && guideVisible && character && !showAnimation && (
           <svg
             className="pointer-events-none absolute inset-[15%] h-[70%] w-[70%] m-auto left-0 right-0 top-0 bottom-0 opacity-10"
             viewBox="0 0 240 240"
@@ -110,12 +136,23 @@ export const HandwritingCanvas = forwardRef<
               fill="none"
               stroke="currentColor"
               strokeWidth="3"
+              strokeDasharray="8 6"
               className="text-primary"
             />
           </svg>
         )}
 
-        {/* Stroke start indicators */}
+        {showAnimation && strokeAnimation && (
+          <>
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <span className="font-khmer-serif text-[140px] leading-none text-foreground/5 select-none">
+                {character?.character}
+              </span>
+            </div>
+            <KhmerStrokeSvg strokes={strokes} animation={strokeAnimation} />
+          </>
+        )}
+
         {showStrokeIndicators &&
           character?.strokes.map((stroke) => (
             <div
@@ -141,26 +178,62 @@ export const HandwritingCanvas = forwardRef<
           onPointerLeave={canvas.handlePointerUp}
           aria-label={t("គូសសរសេរនៅទីនេះ", "Draw here")}
         />
-
-        {!circular && (
-          <p className="pointer-events-none absolute bottom-3 left-0 right-0 text-center text-xs text-muted/50">
-            {t("គូសសរសេរនៅទីនេះ", "Draw here")}
-          </p>
-        )}
       </div>
 
+      {strokeFeedbacks && strokeFeedbacks.length > 0 && (
+        <div className="flex flex-wrap justify-center gap-2" aria-live="polite">
+          {strokeFeedbacks.map((fb) => (
+            <span
+              key={fb.strokeIndex}
+              className={cn(
+                "rounded-full px-3 py-1 text-xs font-medium",
+                fb.status === "correct"
+                  ? "bg-primary/20 text-primary"
+                  : fb.status === "wrong_direction"
+                    ? "bg-gold/20 text-gold"
+                    : "bg-foreground/10 text-muted",
+              )}
+            >
+              {t(fb.messageKm, fb.messageEn)}
+            </span>
+          ))}
+        </div>
+      )}
+
       {showControls && (
-        <div className="canvas-controls-wrapper">
-        <CanvasControls
-          onUndo={canvas.undo}
-          onRedo={canvas.redo}
-          onClear={canvas.clear}
-          canUndo={canvas.canUndo}
-          canRedo={canvas.canRedo}
-          strokeCount={canvas.strokeCount}
-          totalStrokes={character?.strokeCount}
-          layout={controlsLayout}
-        />
+        <div className="canvas-controls-wrapper space-y-3">
+          <CanvasControls
+            onUndo={canvas.undo}
+            onRedo={canvas.redo}
+            onClear={canvas.clear}
+            canUndo={canvas.canUndo}
+            canRedo={canvas.canRedo}
+            strokeCount={canvas.strokeCount}
+            totalStrokes={character?.strokeCount}
+            layout={controlsLayout}
+          />
+          {showGuide && onToggleGuide && (
+            <button
+              type="button"
+              onClick={onToggleGuide}
+              className="focus-ring mx-auto block rounded-full bg-foreground/10 px-4 py-2 text-sm"
+            >
+              {guideVisible
+                ? t("លាក់ណែនាំ", "Hide Guide")
+                : t("បង្ហាញណែនាំ", "Show Guide")}
+            </button>
+          )}
+          {showGuide && !onToggleGuide && (
+            <button
+              type="button"
+              onClick={() => setInternalGuideVisible((v) => !v)}
+              className="focus-ring mx-auto block rounded-full bg-foreground/10 px-4 py-2 text-sm"
+            >
+              {guideVisible
+                ? t("លាក់ណែនាំ", "Hide Guide")
+                : t("បង្ហាញណែនាំ", "Show Guide")}
+            </button>
+          )}
         </div>
       )}
     </div>

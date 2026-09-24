@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
+import { KhmerStrokeCanvas } from "@/components/strokes/KhmerStrokeCanvas";
 import { StrokeList } from "@/components/strokes/StrokeList";
-import { useLanguage } from "@/hooks/useLanguage";
+import { Button } from "@/components/ui/Button";
 import { useStrokeAnimation } from "@/hooks/useStrokeAnimation";
-import { cn } from "@/lib/utils";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { KhmerCharacter } from "@/types";
 import {
   ChevronLeft,
@@ -22,60 +22,17 @@ export function StrokeAnimator({ character }: StrokeAnimatorProps) {
   const { t } = useLanguage();
   const animation = useStrokeAnimation({ strokes: character.strokes });
 
-  const strokeLength = 1000;
-
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       <div className="flex flex-col items-center">
-        <div className="relative mx-auto aspect-square w-full max-w-sm">
-          <div className="absolute inset-0 rounded-full bg-primary/10 blur-2xl" />
-          <div className="relative flex h-full w-full items-center justify-center rounded-full border border-primary/30 bg-surface/60 glow-primary">
-            <div className="absolute inset-4 rounded-full border border-gold/30" />
-
-            <svg
-              viewBox="0 0 240 240"
-              className="absolute inset-[12%] h-[76%] w-[76%]"
-              aria-hidden="true"
-            >
-              {character.strokes.map((stroke, index) => {
-                const isPast = index < animation.currentIndex;
-                const isCurrent = index === animation.currentIndex;
-                const offset = isPast
-                  ? 0
-                  : isCurrent
-                    ? strokeLength * (1 - animation.progress)
-                    : strokeLength;
-
-                return (
-                  <path
-                    key={stroke.id}
-                    d={stroke.path}
-                    fill="none"
-                    stroke={isCurrent ? "#4FD1C5" : isPast ? "#4FD1C5" : "rgba(255,255,255,0.1)"}
-                    strokeWidth={isCurrent ? 5 : 4}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeDasharray={strokeLength}
-                    strokeDashoffset={offset}
-                    className={cn(
-                      isCurrent && !animation.isPlaying && "drop-shadow-[0_0_8px_rgba(79,209,197,0.8)]",
-                    )}
-                    style={{
-                      transition: animation.isPlaying ? "none" : "stroke-dashoffset 0.3s ease",
-                    }}
-                  />
-                );
-              })}
-            </svg>
-
-            <span className="pointer-events-none font-khmer-serif text-7xl text-foreground/15 select-none">
-              {character.character}
-            </span>
-          </div>
-        </div>
-
-        <p className="mt-4 text-sm text-primary" aria-live="polite">
-          {animation.stepLabel}
+        <KhmerStrokeCanvas
+          strokes={character.strokes}
+          characterGlyph={character.character}
+          animation={animation}
+          showCharacterLabel={false}
+        />
+        <p className="mt-4 text-sm font-medium text-primary" aria-live="polite">
+          {t(animation.stepLabel, animation.stepLabelEn)}
         </p>
       </div>
 

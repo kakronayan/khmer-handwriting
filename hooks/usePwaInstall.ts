@@ -1,6 +1,6 @@
 "use client";
 
-import { isIos, isStandalone } from "@/lib/pwa";
+import { isStandalone } from "@/lib/pwa";
 import { useCallback, useEffect, useState } from "react";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -8,41 +8,52 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
 }
 
+declare global {
+  interface Window {
+    __pwaInstallEvent?: BeforeInstallPromptEvent | null;
+  }
+}
+
 export function usePwaInstall() {
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [installed, setInstalled] = useState(false);
-  const [iosDevice, setIosDevice] = useState(false);
 
   useEffect(() => {
     setInstalled(isStandalone());
-    setIosDevice(isIos());
 
-    const onBeforeInstallPrompt = (event: Event) => {
-      event.preventDefault();
-      setInstallEvent(event as BeforeInstallPromptEvent);
+    if (window.__pwaInstallEvent) {
+      setInstallEvent(window.__pwaInstallEvent);
+    }
+
+    const onInstallAvailable = () => {
+      if (window.__pwaInstallEvent) {
+        setInstallEvent(window.__pwaInstallEvent);
+      }
     };
 
-    const onAppInstalled = () => {
+    const onInstalled = () => {
       setInstalled(true);
       setInstallEvent(null);
     };
 
-    window.addEventListener("beforeinstallprompt", onBeforeInstallPrompt);
-    window.addEventListener("appinstalled", onAppInstalled);
+    window.addEventListener("pwa-install-available", onInstallAvailable);
+    window.addEventListener("pwa-installed", onInstalled);
 
     return () => {
-      window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
-      window.removeEventListener("appinstalled", onAppInstalled);
+      window.removeEventListener("pwa-install-available", onInstallAvailable);
+      window.removeEventListener("pwa-installed", onInstalled);
     };
   }, []);
 
   const promptInstall = useCallback(async () => {
-    if (!installEvent) return false;
+    const event = installEvent ?? window.__pwaInstallEvent ?? null;
+    if (!event) return false;
 
-    await installEvent.prompt();
-    const choice = await installEvent.userChoice;
+    await event.prompt();
+    const choice = await event.userChoice;
 
     if (choice.outcome === "accepted") {
+      window.__pwaInstallEvent = null;
       setInstallEvent(null);
       setInstalled(true);
       return true;
@@ -52,9 +63,8 @@ export function usePwaInstall() {
   }, [installEvent]);
 
   return {
-    canInstall: Boolean(installEvent),
+    canInstall: Boolean(installEvent ?? (typeof window !== "undefined" && window.__pwaInstallEvent)),
     installed,
-    iosDevice,
     promptInstall,
   };
 }

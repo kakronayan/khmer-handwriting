@@ -9,11 +9,16 @@ import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { useProgressContext } from "@/components/providers/ProgressProvider";
 import { getCharacterById } from "@/data/characters";
+import { useStrokeAnimation } from "@/hooks/useStrokeAnimation";
 import { useLanguage } from "@/hooks/useLanguage";
+import { scorePractice } from "@/lib/stroke-scoring";
+import type { StrokeFeedback } from "@/types";
 import { formatKhmerNumber } from "@/lib/utils";
+import { Pause, Play, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { use, useRef, useState } from "react";
+
 export default function PracticePage({
   params,
 }: {
@@ -26,23 +31,54 @@ export default function PracticePage({
   const { recordPractice } = useProgressContext();
   const canvasRef = useRef<HandwritingCanvasRef>(null);
   const [currentStroke, setCurrentStroke] = useState(1);
+  const [feedbacks, setFeedbacks] = useState<StrokeFeedback[]>([]);
+  const strokeAnimation = useStrokeAnimation({ strokes: character?.strokes ?? [] });
 
   if (!character) notFound();
 
   const handleCheck = () => {
-    const score = Math.min(
-      100,
-      60 + (canvasRef.current?.strokeCount ?? 0) * 10,
-    );
+    const userStrokes = canvasRef.current?.getStrokes() ?? [];
+    const result = scorePractice(userStrokes, character.strokes);
+
+    setFeedbacks(result.strokeFeedbacks);
+
     const payload = {
-      score,
-      strokesCompleted: canvasRef.current?.strokeCount ?? 0,
+      score: result.overallScore,
+      strokesCompleted: result.strokesCompleted,
       totalStrokes: character.strokeCount,
+      strokeFeedbacks: result.strokeFeedbacks,
     };
     sessionStorage.setItem(`practice-result-${id}`, JSON.stringify(payload));
-    recordPractice(id, score);
+    recordPractice(id, result.overallScore);
     router.push(`/practice/${id}/result`);
   };
+
+  const handlePlay = () => {
+    if (strokeAnimation.isComplete) {
+      strokeAnimation.replay();
+    } else {
+      strokeAnimation.togglePlay();
+    }
+  };
+
+  const playLabel = strokeAnimation.isComplete
+    ? t("ចាក់ឡើងវិញ", "Replay")
+    : strokeAnimation.isPlaying
+      ? t("ផ្អាក", "Pause")
+      : t("▶ Play Stroke", "▶ Play Stroke");
+
+  const PlayButton = (
+    <Button variant="secondary" className="mt-4 w-full" onClick={handlePlay}>
+      {strokeAnimation.isComplete ? (
+        <RotateCcw className="h-4 w-4" />
+      ) : strokeAnimation.isPlaying ? (
+        <Pause className="h-4 w-4" />
+      ) : (
+        <Play className="h-4 w-4" />
+      )}
+      {playLabel}
+    </Button>
+  );
 
   return (
     <div>
@@ -65,8 +101,10 @@ export default function PracticePage({
           character={character}
           showGuide
           showStrokeIndicators
+          strokeAnimation={strokeAnimation}
           showControls
           controlsLayout="compact"
+          strokeFeedbacks={feedbacks}
           className="[&_.canvas-controls-wrapper]:lg:hidden"
           onStrokeComplete={(count) =>
             setCurrentStroke(Math.min(count + 1, character.strokeCount))
@@ -122,6 +160,7 @@ export default function PracticePage({
               {t("រំលង", "Skip")}
             </Button>
           </Link>
+          {PlayButton}
 
           <Card padding="sm" className="border-gold/20">
             <p className="text-xs text-gold">{t("គន្លឹះ", "Tip")}:</p>
@@ -135,7 +174,6 @@ export default function PracticePage({
         </div>
       </div>
 
-      {/* Mobile actions */}
       <div className="mt-6 space-y-3 md:hidden">
         <Button variant="primary" glow className="w-full" size="lg" onClick={handleCheck}>
           {t("ពិនិត្យការសរសេរ", "Check Writing")}
@@ -143,6 +181,7 @@ export default function PracticePage({
         <Link href={`/characters/${id}`} className="block text-center text-sm text-muted">
           {t("រំលង", "Skip")}
         </Link>
+        {PlayButton}
       </div>
     </div>
   );

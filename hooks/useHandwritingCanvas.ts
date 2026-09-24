@@ -17,6 +17,8 @@ export function useHandwritingCanvas(options: UseHandwritingCanvasOptions = {}) 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [strokes, setStrokes] = useState<CanvasStroke[]>([]);
+  const strokesRef = useRef<CanvasStroke[]>([]);
+  strokesRef.current = strokes;
   const [redoStack, setRedoStack] = useState<CanvasStroke[]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
   const currentStrokeRef = useRef<CanvasPoint[]>([]);
@@ -139,6 +141,7 @@ export function useHandwritingCanvas(options: UseHandwritingCanvasOptions = {}) 
     canvasRef,
     containerRef,
     strokes,
+    getStrokes: () => strokesRef.current,
     strokeCount: strokes.length,
     isDrawing,
     displaySize,
