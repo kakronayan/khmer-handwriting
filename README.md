@@ -53,4 +53,6 @@ This app is configured for [Next.js static export](https://nextjs.org/docs/app/b
 
 Live site: [https://kakronayan.github.io/khmer-handwriting/](https://kakronayan.github.io/khmer-handwriting/)
 
-GitHub Pages is published only from [kakronayan.github.io](https://github.com/kakronayan/kakronayan.github.io). This repository does not deploy its own Pages site.
+Pushes to `main` run [Deploy to GitHub Pages](.github/workflows/deploy.yml). That workflow runs `pnpm build` and publishes the generated `out/` folder, including `out/index.html`.
+
+In the repository **Settings → Pages**, set **Build and deployment → Source** to **GitHub Actions**. If the source stays on the branch, GitHub Pages serves this README instead of the built app.
